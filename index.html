@@ -9,7 +9,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <!-- Client ID d'OAuth -->
-    <meta name="google-signin-client_id" content="https://953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com/">
+    <meta name="google-signin-client_id" content="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com">
 
     <script>
         // Funció que es crida en iniciar sessió
@@ -17,7 +17,7 @@
             const userData = jwt_decode(response.credential); // Decodificar el token
             document.getElementById("benvinguda").textContent = `Benvingut/da, ${userData.name}`;
             document.getElementById("boto-sortir").style.display = "block";
-            document.getElementById("google-signin-container").style.display = "none"; // Amagar el contenidor del botó
+            document.getElementById("google-signin").style.display = "none"; // Amagar el botó de Google Sign-In
             console.log("Usuari connectat:", userData);
         }
 
@@ -26,26 +26,24 @@
             google.accounts.id.disableAutoSelect(); // Deshabilitar selecció automàtica
             document.getElementById("benvinguda").textContent = "";
             document.getElementById("boto-sortir").style.display = "none";
-            document.getElementById("google-signin-container").style.display = "block"; // Mostrar de nou el botó
+            document.getElementById("google-signin").style.display = "block"; // Mostrar de nou el botó de Google Sign-In
             console.log("Usuari desconnectat.");
         }
     </script>
 </head>
 <body>
-    <!-- Contenidor del botó de Google Sign-In -->
-    <div id="google-signin-container">
-        <!-- Div d'inicialització -->
-        <div 
-            id="g_id_onload"
-            data-client_id="https://953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com/"
-            data-callback="onSignIn">
-        </div>
+    <!-- Div d'inicialització -->
+    <div 
+        id="g_id_onload"
+        data-client_id="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com"
+        data-callback="onSignIn">
+    </div>
 
-        <!-- Botó de Google Sign-In -->
-        <div 
-            class="g_id_signin"
-            data-type="standard">
-        </div>
+    <!-- Botó de Google Sign-In -->
+    <div 
+        id="google-signin" <!-- Afegit un ID per facilitar la gestió amb JS -->
+        class="g_id_signin"
+        data-type="standard">
     </div>
 
     <!-- Missatge de benvinguda -->
