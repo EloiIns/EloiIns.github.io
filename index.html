@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sign-In Demo</title>
 
+    <!-- Script de Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Client ID d'OAuth -->
     <meta name="google-signin-client_id" content="EL_TEU_ID.apps.googleusercontent.com">
 
     <script>
+        // Funció que es crida en iniciar sessió
         function onSignIn(response) {
             const userData = jwt_decode(response.credential); // Decodificar el token
             document.getElementById("benvinguda").textContent = `Benvingut/da, ${userData.name}`;
@@ -16,6 +20,7 @@
             console.log("Usuari connectat:", userData);
         }
 
+        // Funció per desconnectar
         function signOut() {
             google.accounts.id.disableAutoSelect(); // Deshabilitar selecció automàtica
             document.getElementById("benvinguda").textContent = "";
@@ -25,25 +30,30 @@
     </script>
 </head>
 <body>
+    <!-- Div d'inicialització -->
     <div 
         id="g_id_onload"
         data-client_id="EL_TEU_ID.apps.googleusercontent.com"
         data-callback="onSignIn">
     </div>
 
+    <!-- Botó de Google Sign-In -->
     <div 
         class="g_id_signin"
         data-type="standard">
     </div>
 
+    <!-- Missatge de benvinguda -->
     <h1 id="benvinguda"></h1>
 
+    <!-- Botó de desconnexió -->
     <button 
         id="boto-sortir"
         style="display:none;" 
         onclick="signOut()">Desconnectar
     </button>
 
+    <!-- Afegir la llibreria jwt-decode -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </body>
 </html>
