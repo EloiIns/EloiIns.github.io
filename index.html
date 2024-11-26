@@ -5,32 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sign-In Demo</title>
 
-    <!-- Script de Google Sign-In -->
+    <!-- Afegir el script de Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-    <!-- Client ID d'OAuth -->
+    
+    <!-- Configurar el Client ID d'OAuth -->
     <meta name="google-signin-client_id" content="EL_TEU_ID.apps.googleusercontent.com">
-
+    
     <script>
-        // Funció que es crida en iniciar sessió
+        // Funció que es crida quan un usuari inicia sessió
         function onSignIn(response) {
-            const userData = jwt_decode(response.credential); // Decodificar el token
-            document.getElementById("benvinguda").textContent = `Benvingut/da, ${userData.name}`;
+            const profile = jwt_decode(response.credential);
+            document.getElementById("benvinguda").textContent = `Benvingut/da, ${profile.name}`;
             document.getElementById("boto-sortir").style.display = "block";
-            console.log("Usuari connectat:", userData);
+            console.log("Dades de l'usuari:", profile);
         }
 
-        // Funció per desconnectar
+        // Funció per desconnectar l'usuari
         function signOut() {
-            google.accounts.id.disableAutoSelect(); // Deshabilitar selecció automàtica
+            google.accounts.id.disableAutoSelect();
             document.getElementById("benvinguda").textContent = "";
             document.getElementById("boto-sortir").style.display = "none";
-            console.log("Usuari desconnectat.");
+            console.log("Usuari desconnectat");
         }
     </script>
 </head>
 <body>
-    <!-- Div d'inicialització -->
+    <!-- Div d'inicialització de Google Sign-In -->
     <div 
         id="g_id_onload"
         data-client_id="EL_TEU_ID.apps.googleusercontent.com"
@@ -48,12 +48,12 @@
 
     <!-- Botó de desconnexió -->
     <button 
-        id="boto-sortir"
+        id="boto-sortir" 
         style="display:none;" 
         onclick="signOut()">Desconnectar
     </button>
 
-    <!-- Afegir la llibreria jwt-decode -->
+    <!-- Afegim la llibreria jwt-decode per processar el token (opcional però recomanat) -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </body>
 </html>
