@@ -5,47 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sign-In Demo</title>
 
-    <!-- Script de Google Sign-In -->
+    <!-- Afegir el script de Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-    <!-- Client ID d'OAuth -->
+    
+    <!-- Configurar el Client ID d'OAuth -->
     <meta name="google-signin-client_id" content="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com">
-
+    
     <script>
-        // Funció que es crida en iniciar sessió
+        // Funció que es crida quan un usuari inicia sessió
         function onSignIn(response) {
-            const userData = jwt_decode(response.credential); // Decodificar el token
-            document.getElementById("benvinguda").textContent = `Benvingut/da, ${userData.name}`;
+            const profile = jwt_decode(response.credential);
+            document.getElementById("benvinguda").textContent = `Benvingut/da, ${profile.name}`;
             document.getElementById("boto-sortir").style.display = "block";
-            document.getElementById("google-signin-container").style.display = "none"; // Amagar el contenidor del botó
-            console.log("Usuari connectat:", userData);
+            console.log("Dades de l'usuari:", profile);
         }
 
-        // Funció per desconnectar
+        // Funció per desconnectar l'usuari
         function signOut() {
-            google.accounts.id.disableAutoSelect(); // Deshabilitar selecció automàtica
+            google.accounts.id.disableAutoSelect();
             document.getElementById("benvinguda").textContent = "";
             document.getElementById("boto-sortir").style.display = "none";
-            document.getElementById("google-signin-container").style.display = "block"; // Mostrar de nou el botó
-            console.log("Usuari desconnectat.");
+            console.log("Usuari desconnectat");
         }
     </script>
 </head>
 <body>
-    <!-- Contenidor del botó de Google Sign-In -->
-    <div id="google-signin-container">
-        <!-- Div d'inicialització -->
-        <div 
-            id="g_id_onload"
-            data-client_id="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com"
-            data-callback="onSignIn">
-        </div>
+    <!-- Div d'inicialització de Google Sign-In -->
+    <div 
+        id="g_id_onload"
+        data-client_id="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com"
+        data-callback="onSignIn">
+    </div>
 
-        <!-- Botó de Google Sign-In -->
-        <div 
-            class="g_id_signin"
-            data-type="standard">
-        </div>
+    <!-- Botó de Google Sign-In -->
+    <div 
+        class="g_id_signin"
+        data-type="standard">
     </div>
 
     <!-- Missatge de benvinguda -->
@@ -53,12 +48,12 @@
 
     <!-- Botó de desconnexió -->
     <button 
-        id="boto-sortir"
+        id="boto-sortir" 
         style="display:none;" 
         onclick="signOut()">Desconnectar
     </button>
 
-    <!-- Afegir la llibreria jwt-decode -->
+    <!-- Afegim la llibreria jwt-decode per processar el token (opcional però recomanat) -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </body>
 </html>
