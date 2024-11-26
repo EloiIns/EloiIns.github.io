@@ -9,45 +9,65 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <!-- Client ID d'OAuth -->
-    <meta name="google-signin-client_id" content="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="https://953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com">
 
-    <script>
-        // Funció que es crida en iniciar sessió
-        function onSignIn(response) {
-            const userData = jwt_decode(response.credential); // Decodificar el token
-            document.getElementById("benvinguda").textContent = `Benvingut/da, ${userData.name}`;
-            document.getElementById("boto-sortir").style.display = "block";
-            document.getElementById("google-signin").style.display = "none"; // Amagar el botó de Google Sign-In
-            console.log("Usuari connectat:", userData);
+    <!-- Estils CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
         }
-
-        // Funció per desconnectar
-        function signOut() {
-            google.accounts.id.disableAutoSelect(); // Deshabilitar selecció automàtica
-            document.getElementById("benvinguda").textContent = "";
-            document.getElementById("boto-sortir").style.display = "none";
-            document.getElementById("google-signin").style.display = "block"; // Mostrar de nou el botó de Google Sign-In
-            console.log("Usuari desconnectat.");
+        h1 {
+            margin-top: 20px;
+            color: #333;
         }
-    </script>
+        h2 {
+            color: #2a7ae2;
+            font-weight: normal;
+        }
+        #boto-sortir {
+            margin-top: 20px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #boto-sortir:hover {
+            background-color: #c9302c;
+        }
+        .g_id_signin {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Div d'inicialització -->
-    <div 
-        id="g_id_onload"
-        data-client_id="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com"
-        data-callback="onSignIn">
-    </div>
+    <!-- Títol de la pàgina -->
+    <h1>Google Sign-In Demo</h1>
 
-    <!-- Botó de Google Sign-In -->
-    <div 
-        id="google-signin" <!-- Afegit un ID per facilitar la gestió amb JS -->
-        class="g_id_signin"
-        data-type="standard">
+    <!-- Contenidor del botó de Google Sign-In -->
+    <div id="google-signin-container">
+        <!-- Div d'inicialització -->
+        <div 
+            id="g_id_onload"
+            data-client_id="https://953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com"
+            data-callback="onSignIn">
+        </div>
+
+        <!-- Botó de Google Sign-In -->
+        <div 
+            class="g_id_signin"
+            data-type="standard">
+        </div>
     </div>
 
     <!-- Missatge de benvinguda -->
-    <h1 id="benvinguda"></h1>
+    <h2 id="missatge-benvinguda" style="display:none;">Missatge de benvinguda</h2>
 
     <!-- Botó de desconnexió -->
     <button 
@@ -58,5 +78,35 @@
 
     <!-- Afegir la llibreria jwt-decode -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
+    <!-- Script de les funcions -->
+    <script>
+        // Funció que es crida en iniciar sessió
+        function onSignIn(response) {
+            var id_token = response.credential; 
+            console.log("ID Token: " + id_token);
+
+            // Obtenir dades de l'usuari decodificant el token
+            const userData = jwt_decode(id_token);
+            console.log("Usuari autenticat:", userData);
+
+            // Actualitzar la interfície
+            document.getElementById("missatge-benvinguda").textContent = `Benvingut/da, ${userData.name}`;
+            document.getElementById("missatge-benvinguda").style.display = "block"; // Mostrar el missatge de benvinguda
+            document.getElementById("boto-sortir").style.display = "block"; // Mostrar el botó de desconnexió
+            document.getElementById("google-signin-container").style.display = "none"; // Amagar el botó de Google Sign-In
+        }
+
+        // Funció per desconnectar
+        function signOut() {
+            google.accounts.id.disableAutoSelect(); // Deshabilitar selecció automàtica
+
+            // Restablir la interfície
+            document.getElementById("missatge-benvinguda").style.display = "none"; // Amagar el missatge de benvinguda
+            document.getElementById("boto-sortir").style.display = "none"; // Amagar el botó de desconnexió
+            document.getElementById("google-signin-container").style.display = "block"; // Mostrar el botó de Google Sign-In
+            console.log("Usuari desconnectat.");
+        }
+    </script>
 </body>
 </html>
