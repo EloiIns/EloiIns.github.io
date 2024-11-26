@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In Demo</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta name="google-signin-client_id" content="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com">
+    
+    <script>
+        function onSignIn(response) {
+            const profile = jwt_decode(response.credential);
+            document.getElementById("benvinguda").textContent = `Benvingut/da, ${profile.name}`;
+            document.getElementById("boto-sortir").style.display = "block";
+            console.log("Dades de l'usuari:", profile);
+        }
 
+        function signOut() {
+            google.accounts.id.disableAutoSelect();
+            document.getElementById("benvinguda").textContent = "";
+            document.getElementById("boto-sortir").style.display = "none";
+            console.log("Usuari desconnectat");
+        }
+    </script>
+</head>
+<body>
+    <div 
+        id="g_id_onload"
+        data-client_id="953889846190-d9ugslcba3j6bvaiggksndpl4asvh0fr.apps.googleusercontent.com"
+        data-callback="onSignIn">
+    </div>
+
+    <div 
+        class="g_id_signin"
+        data-type="standard">
+    </div>
+
+    <h1 id="benvinguda"></h1>
+
+    <button 
+        id="boto-sortir" 
+        style="display:none;" 
+        onclick="signOut()">Desconnectar
+    </button>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+</body>
+</html>
